@@ -1,26 +1,49 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { db, } from '../firebase'
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
-
-const DashboardPage = ({isUserAuthenticated}) => {
-const [data, setData] = useState([]);
-const [comments, setComments] = useState({});
-const [likes, setLikes] = useState({});
-const [searchQuery, setSearchQuery] = useState('');
+import { ModeContext, UserContext } from '../context';
+import "../custom.css";
 
 
-const handleComment = async (sneakerId, comment) => {
-    const valRef = doc(db, 'sneakers', sneakerId);
-    await updateDoc(valRef, { comments: [...comments[sneakerId], comment] });
-    setComments((prevComments) => ({ ...prevComments, [sneakerId]: [...prevComments[sneakerId], comment] }));
-};
+const DashboardPage = ({ isUserAuthenticated }) => {
+    const [data, setData] = useState([]);
+    const [comment, setComment] = useState("")
+    const [comments, setComments] = useState({});
+    const [likes, setLikes] = useState({});
+    const [searchQuery, setSearchQuery] = useState("");
 
-const handleLike = async (sneakerId) => {
-    const valRef = doc(db, 'sneakers', sneakerId);
-    await updateDoc(valRef, { likes: likes[sneakerId] + 1 });
-    setLikes((prevLikes) => ({ ...prevLikes, [sneakerId]: prevLikes[sneakerId] + 1 }));
-};
+    const { userUID } = useContext(UserContext);
+    const {isDarkModeOn} = useContext(ModeContext)
 
+
+    const handleComment = async (sneakerId, comment) => {
+        try {
+          const valRef = doc(db, 'sneakers', sneakerId);
+          const newComment = { userId: userUID, text: comment };
+      
+          await updateDoc(valRef, { comments: [...comments[sneakerId], newComment] });
+      
+          setComments((prevComments) => ({
+            ...prevComments,
+            [sneakerId]: [...prevComments[sneakerId], newComment],
+          }));
+        } catch (error) {
+          console.error('Error adding comment:', error);
+        }
+      };
+
+      const handleCommentChange = (e) => {
+        e.preventDefault()
+        setComment(e.target.value)
+      }
+      
+    
+      const handleLike = async (sneakerId) => {
+        const valRef = doc(db, 'sneakers', sneakerId);
+        await updateDoc(valRef, { likes: likes[sneakerId] + 1 });
+        setLikes((prevLikes) => ({ ...prevLikes, [sneakerId]: prevLikes[sneakerId] + 1 }));
+      };
+    
 
 const getSneakers = async () => {
     const valRef = collection(db, 'sneakers')
@@ -49,8 +72,8 @@ const filteredData = data.filter(
   );
 
   return (
-    <div className="container">
-    <h2 className="mt-4">Sneakers collection</h2>
+    <div className={`container ${isDarkModeOn ? 'dark-mode' : 'light-mode'}`}>
+    <h2 className={`mt-4 ${isDarkModeOn ? 'text-white' : ''}`}>Sneakers collection</h2>
     <div className="mb-3">
         <input
           type="text"
@@ -64,29 +87,36 @@ const filteredData = data.filter(
         {filteredData.map((value) => (
             <div key={value.id} className="col-md-4 mb-4">
                 <div className="card">
-                    <img src={value.imgURL} className="card-img-top" alt={value.sneakersVal} />
+                <img
+                src={value.imgURL}
+                className="card-img-top img-fluid"
+                alt={value.sneakersVal}
+                style={{ height: "260px" }} 
+              />
                     <div className="card-body">
                         <h5 className="card-title">{value.sneakersVal}</h5>
                         <p className="card-text">{value.color}</p>
                         <p className="card-text">{value.brand}</p>
                         <p className="card-text">{value.releaseDate}</p>
+                        <p className="card-text">Owner: {value.owner?.name}</p> 
                         <div className="mt-3">
                                     <p>Comments:</p>
                                     <ul>
                                         {comments[value.id] &&
                                             comments[value.id].map((comment, index) => (
-                                                <li key={index}>{comment}</li>
+                                                <li key={index}>{comment.text}</li>
                                             ))}
                                     </ul>
                                     <input
-                                        type="text"
-                                        placeholder="Add a comment"
-                                        onChange={(e) => setComments((prevComments) => ({ ...prevComments, [value.id]: [...prevComments[value.id], e.target.value] }))}
+                                            type="text"
+                                            placeholder="Add a comment"
+                                            onChange={(e) => handleCommentChange(e)}
                                         disabled={!isUserAuthenticated}
                                     />
+
                                     <button
                                         className="btn btn-secondary btn-sm ml-2"
-                                        onClick={() => handleComment(value.id, comments[value.id][comments[value.id].length - 1])}
+                                        onClick={() => handleComment(value.id, comment)}
                                         disabled={!isUserAuthenticated}
                                     >
                                         Add Comment

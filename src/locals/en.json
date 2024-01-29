@@ -2,5 +2,6 @@
     "welcome": "Welcome to the App",
     "dashboard": "Dashboard",
     "register": "Register",
-    "login": "Login"
+    "login": "Login",
+    "mycollection": "My Collection"
   }

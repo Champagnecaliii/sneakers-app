@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ModeContext } from '../context';
 
-const ThemeToggle = ({ toggleTheme }) => {
+const ThemeToggle = () => {
+const {isDarkModeOn, setIsDarkModeOn} = useContext(ModeContext)
+
+  const toggleTheme = () => {
+    setIsDarkModeOn(!isDarkModeOn)
+  }
+
     return (
-      <div className="position-fixed top-0 end-0 p-3">
+      <div className="position-absolute top-0 end-0 p-3">
         <div className="form-check form-switch">
           <input
             className="form-check-input"

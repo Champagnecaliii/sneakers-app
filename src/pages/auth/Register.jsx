@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { register } from '../../authService';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../../authService";
+import { routes } from "../../routes";
 
 const Registration = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
+    setLoading(true);
+
     try {
-      await register(email, password);
-      console.log('Registration successful');
+      await register(email, password, username);
+      navigate(routes.auth.login);
     } catch (error) {
-      console.error('Registration failed:', error.message);
+      console.error("Registration failed:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -20,6 +28,19 @@ const Registration = () => {
       <div className="card shadow p-4 rounded">
         <h2 className="text-center mb-4">Register</h2>
         <form>
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label">
+              User Name
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email address
@@ -30,6 +51,7 @@ const Registration = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="mb-3">
@@ -42,10 +64,16 @@ const Registration = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
-          <button type="button" className="btn btn-primary w-100" onClick={handleRegister}>
-            Register
+          <button
+            type="button"
+            className="btn btn-primary w-100"
+            onClick={handleRegister}
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Register"}
           </button>
         </form>
         <p className="mt-3 text-center">

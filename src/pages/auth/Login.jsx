@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../authService'
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../authService";
+import { routes } from "../../routes";
+import { UserContext } from "../../context";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { setUserUID, setIsUserAuthenticated, setUsername } = useContext(UserContext);
+
   const handleLogin = async () => {
+    setLoading(true);
     try {
-      await login(email, password);
-      navigate('/createcollection')
-      console.log('Login successful');
+      const { userUID, username } = await login(email, password);
+      setUserUID(userUID);
+      setUsername(username)
+      setIsUserAuthenticated(true);
+      navigate(routes.collection.createCollection);
     } catch (error) {
       console.error('Login failed:', error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,8 +56,13 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="button" className="btn btn-primary w-100" onClick={handleLogin}>
-            Login
+          <button
+            type="button"
+            className="btn btn-primary w-100"
+            onClick={handleLogin}
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Login"}
           </button>
         </form>
         <p className="mt-3 text-center">
