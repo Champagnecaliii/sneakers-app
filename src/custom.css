@@ -1,10 +1,9 @@
 .dark-mode {
-    background-color: #040D12; /* Dark background color */
-    /* color: #ffffff;  */
+    background-color: #040D12; 
   }
   
   .dark-mode a {
-    color: #8ac7ff; /* Accent color for links in dark mode */
+    color: #8ac7ff; 
   }
 
   body {
@@ -13,6 +12,12 @@
 
   .language-toggle-container {
     position: absolute;
-    top: 15px;
+    top: 10px;
     right: 150px;
   }
+
+.logOut{
+ position: relative;
+ bottom: 48px;
+ margin-left: 1530px;
+}
