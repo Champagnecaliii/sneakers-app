@@ -10,18 +10,19 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { setUserUID, setIsUserAuthenticated, setUsername } = useContext(UserContext);
+  const { setUserUID, setIsUserAuthenticated, setUsername } =
+    useContext(UserContext);
 
   const handleLogin = async () => {
     setLoading(true);
     try {
       const { userUID, username } = await login(email, password);
       setUserUID(userUID);
-      setUsername(username)
+      setUsername(username);
       setIsUserAuthenticated(true);
       navigate(routes.collection.createCollection);
     } catch (error) {
-      console.error('Login failed:', error.message);
+      console.error("Login failed:", error.message);
     } finally {
       setLoading(false);
     }

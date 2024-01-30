@@ -1,23 +1,23 @@
 .dark-mode {
-    background-color: #040D12; 
-  }
-  
-  .dark-mode a {
-    color: #8ac7ff; 
-  }
+  background-color: #040d12;
+}
 
-  body {
-    background-color: #F9E8D9;
-  }
+.dark-mode a {
+  color: #8ac7ff;
+}
 
-  .language-toggle-container {
-    position: absolute;
-    top: 10px;
-    right: 150px;
-  }
+body {
+  background-color: #f9e8d9;
+}
 
-.logOut{
- position: relative;
- bottom: 48px;
- margin-left: 1530px;
+.language-toggle-container {
+  position: absolute;
+  top: 10px;
+  right: 150px;
+}
+
+.logOut {
+  position: relative;
+  bottom: 48px;
+  margin-left: 1530px;
 }

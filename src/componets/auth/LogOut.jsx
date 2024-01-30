@@ -15,9 +15,11 @@ const LogOut = () => {
     }
   };
 
-  return <button className="btn btn-outline-danger" onClick={handleLogOut}>
-  Log Out
-</button>
+  return (
+    <button className="btn btn-outline-danger" onClick={handleLogOut}>
+      Log Out
+    </button>
+  );
 };
 
 export default LogOut;

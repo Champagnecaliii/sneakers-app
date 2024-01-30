@@ -1,12 +1,12 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 const LanguageToggle = () => {
-  const { i18n} = useTranslation();
+  const { i18n } = useTranslation();
 
   const toggleLanguage = () => {
     const currentLanguage = i18n.language;
-    const newLanguage = currentLanguage === 'en' ? 'pl' : 'en';
+    const newLanguage = currentLanguage === "en" ? "pl" : "en";
     console.log(`Changing language from ${currentLanguage} to ${newLanguage}`);
     i18n.changeLanguage(newLanguage);
   };
@@ -14,8 +14,10 @@ const LanguageToggle = () => {
   return (
     <>
       <div className="language-toggle-container">
-        <button className='btn btn-secondary' onClick={toggleLanguage}>
-          {i18n.language === 'en' ? 'Switch to Polish' : 'Przełącz na angielski'}
+        <button className="btn btn-secondary" onClick={toggleLanguage}>
+          {i18n.language === "en"
+            ? "Switch to Polish"
+            : "Przełącz na angielski"}
         </button>
       </div>
     </>
@@ -23,4 +25,3 @@ const LanguageToggle = () => {
 };
 
 export default LanguageToggle;
-

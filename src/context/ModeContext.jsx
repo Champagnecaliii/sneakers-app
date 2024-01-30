@@ -7,7 +7,7 @@ export const ModeContextProvider = ({ children }) => {
 
   const data = {
     isDarkModeOn,
-    setIsDarkModeOn
+    setIsDarkModeOn,
   };
 
   return <ModeContext.Provider value={data}>{children}</ModeContext.Provider>;

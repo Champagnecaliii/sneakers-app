@@ -9,11 +9,11 @@ const MyCollection = ({ data, loading, onDelete }) => {
         data.map((value) => (
           <div key={value.id} className="col-md-4 mb-4">
             <div className="card">
-            <img
+              <img
                 src={value.imgURL}
                 className="card-img-top img-fluid"
                 alt={value.sneakersVal}
-                style={{ height: "260px" }} 
+                style={{ height: "260px" }}
               />
               <div className="card-body">
                 <h5 className="card-title">{value.sneakersVal}</h5>

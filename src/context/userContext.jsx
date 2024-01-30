@@ -7,7 +7,6 @@ export const UserContextProvider = ({ children }) => {
   const [username, setUsername] = useState(null);
   const [userUID, setUserUID] = useState(null);
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
-  
 
   const data = {
     email,
